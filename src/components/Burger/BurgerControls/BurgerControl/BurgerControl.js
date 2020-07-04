@@ -12,7 +12,8 @@ const burgerControl = props => {
             >-</button>
             <button
                 className={classes.More}
-                onClick={props.added}>+</button>
+                onClick={props.added}
+            >+</button>
         </div>
     )
 };
