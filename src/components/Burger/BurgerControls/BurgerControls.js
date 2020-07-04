@@ -24,7 +24,15 @@ const controls = [
 const burgerControls = props => {
     return (
         <div className={classes.BurgerControls}>
-            {controls.map(ctrl => <BurgerControl key={ctrl.label} label={ctrl.label}/>)};
+            {controls.map(ctrl =>
+                <BurgerControl
+                    key={ctrl.label}
+                    label={ctrl.label}
+                    added={() => props.addIngredient(ctrl.type)}
+                    removed={() => props.removeIngredient(ctrl.type)}
+                    disabled={props.disabled[ctrl.type]}
+                />
+            )};
         </div>
     );
 };
