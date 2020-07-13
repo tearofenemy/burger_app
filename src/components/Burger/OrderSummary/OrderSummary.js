@@ -4,7 +4,7 @@ import Button from '../../UI/Button/Button';
 
 class OrderSummary extends Component {
     // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     console.log('[OrderSummary.js] didUpdate');
+    //     console.log('[CheckoutSummary.js] didUpdate');
     // }
 
     render() {
@@ -27,7 +27,7 @@ class OrderSummary extends Component {
                 <p>Total price: <strong>{this.props.totalPrice.toFixed(2)} $</strong></p>
                 <p>Would you like to checkout your order?</p>
                 <Button btnType="Danger" clicked={this.props.purchaseCancelled}>CANCEL</Button>
-                <Button btnType="Success" clicked={this.props.purchaseCheckout}>CHECKOUT</Button>
+                <Button btnType="Success" clicked={this.props.purchaseCheckout}>CONTINUE</Button>
             </Aux>
         )
     }

@@ -12,7 +12,7 @@ class Layout extends Component{
 
     showSideDrawerHandler = () => {
         this.setState({
-            showSideDrawer: true
+            showSideDrawer: false
         });
     };
 
