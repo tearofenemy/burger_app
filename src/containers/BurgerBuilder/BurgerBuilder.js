@@ -39,30 +39,42 @@ class BurgerBuilder extends Component{
     }
 
     purchaseCheckoutHandler = () => {
-        this.setState({loading: true});
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'John',
-                email: 'calm.snow98@gmail.com',
-                address: {
-                    street: 'Truda',
-                    building: 34,
-                    country: 'RUS',
-                    zipCode: '328225'
-                },
-                deliveryMethod: 'faster'
-            }
-        };
 
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({loading: false, purchasing: false});
-            })
-            .catch(error => {
-                this.setState({loading: false, purchasing: false});
-            });
+        const queryParams = [];
+
+        for(let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+        const queryInput = queryParams.join('&');
+
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryInput
+        });
+        // this.setState({loading: true});
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: 'John',
+        //         email: 'calm.snow98@gmail.com',
+        //         address: {
+        //             street: 'Truda',
+        //             building: 34,
+        //             country: 'RUS',
+        //             zipCode: '328225'
+        //         },
+        //         deliveryMethod: 'faster'
+        //     }
+        // };
+        //
+        // axios.post('/orders.json', order)
+        //     .then(response => {
+        //         this.setState({loading: false, purchasing: false});
+        //     })
+        //     .catch(error => {
+        //         this.setState({loading: false, purchasing: false});
+        //     });
     }
 
     updatePurchase = ingredients => {
