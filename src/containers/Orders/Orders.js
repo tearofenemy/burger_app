@@ -25,13 +25,17 @@ class Orders extends Component{
     }
 
     render() {
-        const ordersOutput = this.state.orders.map(order => {
+        let ordersOutput = this.state.orders.map(order => {
             return <Order
                 key={order.id}
                 ingredients={order.ingredients}
                 price={order.price}
+                customer={order.customer.name}
             />
         });
+        if(this.state.orders.length === 0) {
+            ordersOutput = <p>No orders. Please, back to main page and build your burger!</p>;
+        }
         return(
             <div>
                 {ordersOutput}

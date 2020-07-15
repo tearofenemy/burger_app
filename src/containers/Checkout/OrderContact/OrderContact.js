@@ -2,16 +2,20 @@ import React, {Component} from "react";
 import Button from '../../../components/UI/Button/Button';
 import classes from './CheckoutContact.module.css';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 import axios from '../../../axios-orders';
 
 class OrderContact extends Component{
 
     state = {
-        name: '',
-        email: '',
-        address: {
-            country: '',
-            street: '',
+        customer: {
+            name: '',
+            email: '',
+            address: {
+                country: '',
+                city: '',
+                street: '',
+            }
         },
         loading: false
     }
@@ -23,13 +27,12 @@ class OrderContact extends Component{
             ingredients: this.props.ingredients,
             price: this.props.totalPrice,
             customer: {
-                name: this.props.name,
-                email: 'calm.snow98@gmail.com',
+                name: this.state.name,
+                email: this.state.email,
                 address: {
-                    street: 'Truda',
-                    building: 34,
-                    country: 'RUS',
-                    postalCode: '328225'
+                    country: this.state.country,
+                    city: this.state.city,
+                    street: this.state.street
                 },
                 deliveryMethod: 'faster'
             }
@@ -48,15 +51,40 @@ class OrderContact extends Component{
     render() {
         let form = (
             <form>
-                <label>Name</label>
-                <input value={this.state.name} onChange={e => this.setState({name: e.target.value})} type="text"  name="name" placeholder="Name" />
-                <label>Email</label>
-                <input value={this.state.email} onChange={e => this.setState({email: e.target.value})}  type="email" name="name" placeholder="Email" />
-                <label>Country</label>
-                <input value={this.state.address.country} onChange={e => this.setState({country: e.target.value})} type="text"  name="country" placeholder="Country" />
-                <label>Street</label>
-                <input value={this.state.address.street} onChange={e => this.setState({street: e.target.value})}  type="text" name="street" placeholder="Street" />
-                <Button clicked={(e) => this.orderHandler(e)} btnType='Success'>ORDER</Button>
+                <Input
+                    value={this.state.name}
+                    label="Name" inputtype="input"
+                    placeholder="Your name"
+                    onChange={e => this.setState({name: e.target.value})}
+                />
+                <Input
+                    value={this.state.email}
+                    label="Email"
+                    inputtype="input" placeholder="Your email"
+                    onChange={e => this.setState({email: e.target.value})}
+                />
+                <Input
+                    value={this.state.country}
+                    label="Country"
+                    inputtype="input"
+                    placeholder="Your country"
+                    onChange={e => this.setState({country: e.target.value})}
+                />
+                <Input
+                    value={this.state.city}
+                    label="City"
+                    inputtype="input"
+                    placeholder="Your city"
+                    onChange={e => this.setState({city:  e.target.value})}
+                />
+                <Input
+                    value={this.state.street}
+                    label="Street"
+                    inputtype="input"
+                    placeholder="Your street"
+                    onChange={e => this.setState({street: e.target.value})}
+                />
+                <Button clicked={(e) => this.orderHandler(e)} btnType='Success'>MAKE ORDER</Button>
             </form>
         );
         if(this.state.loading) {
