@@ -30,7 +30,7 @@ class Orders extends Component{
                 key={order.id}
                 ingredients={order.ingredients}
                 price={order.price}
-                customer={order.customer.name}
+                customer={order.orderData.name}
             />
         });
         if(this.state.orders.length === 0) {

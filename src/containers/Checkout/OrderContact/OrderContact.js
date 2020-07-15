@@ -65,10 +65,17 @@ class OrderContact extends Component{
 
     orderHandler = event => {
         event.preventDefault();
+
+        const formData = {};
+
+        for(let formElemID in this.state.orderForm) {
+            formData[formElemID] = this.state.orderForm[formElemID].value;
+        }
         this.setState({loading: true});
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.totalPrice,
+            orderData: formData
         };
 
         axios.post('/orders.json', order)
@@ -81,43 +88,39 @@ class OrderContact extends Component{
             })
     }
 
+    inputChangeHandler = (event, inputID) => {
+        const updatedForm = {
+            ...this.state.orderForm
+        };
+        const updatedFormElement = {
+            ...this.state.orderForm[inputID]
+        }
+        updatedFormElement.value = event.target.value;
+        updatedForm[inputID] = updatedFormElement;
+        this.setState({orderForm: updatedForm});
+    }
+
     render() {
+        const formElementsArray = [];
+
+        for(let key in this.state.orderForm) {
+            formElementsArray.push({
+                id: key,
+                config: this.state.orderForm[key]
+            });
+        }
         let form = (
-            <form>
-                <Input
-                    value={this.state.name}
-                    label="Name" inputtype="input"
-                    placeholder="Your name"
-                    onChange={e => this.setState({name: e.target.value})}
-                />
-                <Input
-                    value={this.state.email}
-                    label="Email"
-                    inputtype="input" placeholder="Your email"
-                    onChange={e => this.setState({email: e.target.value})}
-                />
-                <Input
-                    value={this.state.country}
-                    label="Country"
-                    inputtype="input"
-                    placeholder="Your country"
-                    onChange={e => this.setState({country: e.target.value})}
-                />
-                <Input
-                    value={this.state.city}
-                    label="City"
-                    elemetType="input"
-                    placeholder="Your city"
-                    onChange={e => this.setState({city:  e.target.value})}
-                />
-                <Input
-                    value={this.state.street}
-                    label="Street"
-                    inputtype="input"
-                    placeholder="Your street"
-                    onChange={e => this.setState({street: e.target.value})}
-                />
-                <Button clicked={(e) => this.orderHandler(e)} btnType='Success'>MAKE ORDER</Button>
+            <form onSubmit={e => this.orderHandler(e)}>
+                {formElementsArray.map(formElement => {
+                    return <Input
+                        key={formElement.id}
+                        elementType={formElement.config.elementType}
+                        elementConfig={formElement.config.elementConfig}
+                        value={formElement.value}
+                        changed={(event) => this.inputChangeHandler(event, formElement.id)}
+                    />
+                })}
+                <Button btnType='Success'>MAKE ORDER</Button>
             </form>
         );
         if(this.state.loading) {
