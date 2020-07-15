@@ -8,13 +8,56 @@ import axios from '../../../axios-orders';
 class OrderContact extends Component{
 
     state = {
-        customer: {
-            name: '',
-            email: '',
-            address: {
-                country: '',
-                city: '',
-                street: '',
+        orderForm: {
+            name: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Name'
+                },
+                value: ''
+            },
+            email: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'email',
+                    placeholder: 'Your Email'
+                },
+                value: ''
+            },
+            country: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Country'
+                },
+                value: ''
+            },
+            city: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your City'
+                },
+                value: ''
+            },
+            street: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Street'
+                },
+                value: ''
+            },
+            deliveryMethod: {
+                elementType: 'select',
+                elementConfig: {
+                    options: [
+                        {value: 'fastest', displayValue: 'Fastest'},
+                        {value: 'cheapest', displayValue: 'Cheapest'}
+                    ]
+                },
+                value: ''
             }
         },
         loading: false
@@ -26,16 +69,6 @@ class OrderContact extends Component{
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.totalPrice,
-            customer: {
-                name: this.state.name,
-                email: this.state.email,
-                address: {
-                    country: this.state.country,
-                    city: this.state.city,
-                    street: this.state.street
-                },
-                deliveryMethod: 'faster'
-            }
         };
 
         axios.post('/orders.json', order)
@@ -73,7 +106,7 @@ class OrderContact extends Component{
                 <Input
                     value={this.state.city}
                     label="City"
-                    inputtype="input"
+                    elemetType="input"
                     placeholder="Your city"
                     onChange={e => this.setState({city:  e.target.value})}
                 />
