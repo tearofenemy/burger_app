@@ -15,7 +15,13 @@ class OrderContact extends Component{
                     type: 'text',
                     placeholder: 'Your Name'
                 },
-                value: ''
+                value: '',
+                validation: {
+                    required: true,
+                    minLength: 5,
+                    maxLength: 8
+                },
+                valid: false
             },
             email: {
                 elementType: 'input',
@@ -23,7 +29,13 @@ class OrderContact extends Component{
                     type: 'email',
                     placeholder: 'Your Email'
                 },
-                value: ''
+                value: '',
+                validation: {
+                    required: true,
+                    minLength: 3,
+                    maxLength: 20
+                },
+                valid: false
             },
             country: {
                 elementType: 'input',
@@ -31,7 +43,13 @@ class OrderContact extends Component{
                     type: 'text',
                     placeholder: 'Your Country'
                 },
-                value: ''
+                value: '',
+                validation: {
+                    required: true,
+                    minLength: 3,
+                    maxLength: 15
+                },
+                valid: false
             },
             city: {
                 elementType: 'input',
@@ -39,7 +57,13 @@ class OrderContact extends Component{
                     type: 'text',
                     placeholder: 'Your City'
                 },
-                value: ''
+                value: '',
+                validation: {
+                    required: true,
+                    minLength: 3,
+                    maxLength: 25
+                },
+                valid: false
             },
             street: {
                 elementType: 'input',
@@ -47,7 +71,13 @@ class OrderContact extends Component{
                     type: 'text',
                     placeholder: 'Your Street'
                 },
-                value: ''
+                value: '',
+                validation: {
+                    required: true,
+                    minLength: 3,
+                    maxLength: 25
+                },
+                valid: false
             },
             deliveryMethod: {
                 elementType: 'select',
@@ -57,10 +87,27 @@ class OrderContact extends Component{
                         {value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
-                value: ''
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: false
             }
         },
         loading: false
+    }
+
+    checkValidity = (value, rules) => {
+        let isValid = true;
+
+        if(rules.required) {
+            isValid = value.trim() !== '' && isValid;
+        }
+
+        if(rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid;
+        }
+        return isValid;
     }
 
     orderHandler = event => {
@@ -96,6 +143,7 @@ class OrderContact extends Component{
             ...this.state.orderForm[inputID]
         }
         updatedFormElement.value = event.target.value;
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedForm[inputID] = updatedFormElement;
         this.setState({orderForm: updatedForm});
     }
@@ -117,6 +165,8 @@ class OrderContact extends Component{
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
                         value={formElement.value}
+                        invalid={!formElement.config.valid}
+                        shouldValidate={formElement.config.validation}
                         changed={(event) => this.inputChangeHandler(event, formElement.id)}
                     />
                 })}

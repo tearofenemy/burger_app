@@ -5,17 +5,21 @@
     outline: none;
     cursor: pointer;
     font: inherit;
-    padding: 10px;
+    padding: 13px;
     margin: 10px;
     font-weight: bold;
 }
 
 .Danger {
     color: #944317;
+    border: 1px solid #944317;
+    border-radius: 10rem;
 }
 
 .Success {
     color: #5C9210;
+    border: 1px solid #5C9210;
+    border-radius: 10rem;
 }
 
 
