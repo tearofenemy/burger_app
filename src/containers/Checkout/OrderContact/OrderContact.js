@@ -21,7 +21,8 @@ class OrderContact extends Component{
                     minLength: 5,
                     maxLength: 8
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             email: {
                 elementType: 'input',
@@ -35,7 +36,8 @@ class OrderContact extends Component{
                     minLength: 3,
                     maxLength: 20
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             country: {
                 elementType: 'input',
@@ -49,7 +51,8 @@ class OrderContact extends Component{
                     minLength: 3,
                     maxLength: 15
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             city: {
                 elementType: 'input',
@@ -63,7 +66,8 @@ class OrderContact extends Component{
                     minLength: 3,
                     maxLength: 25
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             street: {
                 elementType: 'input',
@@ -77,7 +81,8 @@ class OrderContact extends Component{
                     minLength: 3,
                     maxLength: 25
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             deliveryMethod: {
                 elementType: 'select',
@@ -87,18 +92,22 @@ class OrderContact extends Component{
                         {value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: false
+                value: 'fastest',
+                validation: {},
+                valid: true,
+                touched: false
             }
         },
+        formIsValid: false,
         loading: false
     }
 
     checkValidity = (value, rules) => {
         let isValid = true;
+
+        if(!rules) {
+            return true;
+        }
 
         if(rules.required) {
             isValid = value.trim() !== '' && isValid;
@@ -144,8 +153,16 @@ class OrderContact extends Component{
         }
         updatedFormElement.value = event.target.value;
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.touched = true;
         updatedForm[inputID] = updatedFormElement;
-        this.setState({orderForm: updatedForm});
+
+        let formIsValid = true;
+
+        for(let inputElem in updatedForm) {
+            formIsValid = updatedForm[inputElem].valid && formIsValid;
+        }
+        console.log(formIsValid);
+        this.setState({orderForm: updatedForm, formIsValid: formIsValid});
     }
 
     render() {
@@ -167,10 +184,11 @@ class OrderContact extends Component{
                         value={formElement.value}
                         invalid={!formElement.config.valid}
                         shouldValidate={formElement.config.validation}
+                        touched={formElement.config.touched}
                         changed={(event) => this.inputChangeHandler(event, formElement.id)}
                     />
                 })}
-                <Button btnType='Success'>MAKE ORDER</Button>
+                <Button btnType='Success' disabled={!this.state.formIsValid}>MAKE ORDER</Button>
             </form>
         );
         if(this.state.loading) {
