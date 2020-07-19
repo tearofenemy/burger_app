@@ -161,7 +161,6 @@ class OrderContact extends Component{
         for(let inputElem in updatedForm) {
             formIsValid = updatedForm[inputElem].valid && formIsValid;
         }
-        console.log(formIsValid);
         this.setState({orderForm: updatedForm, formIsValid: formIsValid});
     }
 
