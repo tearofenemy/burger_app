@@ -7,7 +7,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
 import { connect } from 'react-redux';
-import * as actionType from '../../store/actions';
+import * as actionType from '../../store/actions/actionTypes';
 
 
 class BurgerBuilder extends Component{
