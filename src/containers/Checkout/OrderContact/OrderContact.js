@@ -4,6 +4,7 @@ import classes from './CheckoutContact.module.css';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import axios from '../../../axios-orders';
+import {connect} from 'react-redux';
 
 class OrderContact extends Component{
 
@@ -129,8 +130,8 @@ class OrderContact extends Component{
         }
         this.setState({loading: true});
         const order = {
-            ingredients: this.props.ingredients,
-            price: this.props.totalPrice,
+            ingredients: this.props.ingrds,
+            price: this.props.price,
             orderData: formData
         };
 
@@ -202,4 +203,11 @@ class OrderContact extends Component{
     }
 }
 
-export default OrderContact;
+const mapStateToProps = state => {
+    return {
+        ingrds: state.ingredients,
+        price: state.totalPrice
+    };
+}
+
+export default connect(mapStateToProps)(OrderContact);
