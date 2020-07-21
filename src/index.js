@@ -5,13 +5,13 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from 'react-redux';
-import burgerBuilder from "./store/reducers/burgerBuilder";
+import burgerBuilderReducer from "./store/reducers/burgerBuilder";
 import {createStore, applyMiddleware} from "redux";
 import logger from 'redux-logger';
 import thunk from "redux-thunk";
 
 const store = createStore(
-    burgerBuilder,
+    burgerBuilderReducer,
     applyMiddleware(logger, thunk)
 );
 

@@ -5,10 +5,8 @@ import BurgerControls from '../../components/Burger/BurgerControls/BurgerControl
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import axios from '../../axios-orders';
 import { connect } from 'react-redux';
-import * as actionType from '../../store/actions/actionTypes';
-
+import * as burgerBuilderActions from "../../store/actions/burgerBuilder";
 
 class BurgerBuilder extends Component{
 
@@ -55,14 +53,11 @@ queryParams.push('price=' + this.props.price);
 const queryInput = queryParams.join('&');*/
 
     state = {
-      purchasing: false,
-      loading: false
+      purchasing: false
     };
 
     componentDidMount() {
-        // axios.get('https://react-burger-22dfb.firebaseio.com/ingredients.json')
-        //     .then(response => this.setState({ingredients: response.data}))
-        //     .catch(error => console.log(error));
+        this.props.onInitIngredients();
     }
 
     purchaseHandle = () => {
@@ -96,7 +91,7 @@ const queryInput = queryParams.join('&');*/
         }
 
         let orderSummary = null;
-        let burger = <Spinner/>;
+        let burger = this.props.error ? <p>Ingredients can't be loaded</p> : <Spinner/>;
 
         if(this.props.ingrds) {
             burger = (
@@ -120,10 +115,6 @@ const queryInput = queryParams.join('&');*/
                 purchaseCheckout={this.purchaseCheckoutHandler}
             />;
         }
-
-        if(this.state.loading) {
-            orderSummary = <Spinner/>;
-        }
         return(
           <Aux>
               <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
@@ -138,14 +129,16 @@ const queryInput = queryParams.join('&');*/
 const mapStateToProps = state => {
     return {
         ingrds: state.ingredients,
-        price: state.totalPrice
+        price: state.totalPrice,
+        error: state.error
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onIngredientAdded: (ingrName) => dispatch({type: actionType.ADD_INGREDIENT, ingredientName: ingrName}),
-        onIngredientRemoved: (ingrName) => dispatch({type: actionType.REMOVE_INGREDIENT, ingredientName: ingrName})
+        onIngredientAdded: (ingrName) => dispatch(burgerBuilderActions.addIngredient(ingrName)),
+        onIngredientRemoved: (ingrName) => dispatch(burgerBuilderActions.removeIngredient(ingrName)),
+        onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
     }
 };
 

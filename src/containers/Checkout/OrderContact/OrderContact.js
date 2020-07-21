@@ -3,7 +3,6 @@ import Button from '../../../components/UI/Button/Button';
 import classes from './CheckoutContact.module.css';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-import axios from '../../../axios-orders';
 import {connect} from 'react-redux';
 
 class OrderContact extends Component{
@@ -134,15 +133,6 @@ class OrderContact extends Component{
             price: this.props.price,
             orderData: formData
         };
-
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({loading: false});
-                this.props.history.push('/');
-            })
-            .catch(error => {
-                this.setState({loading: false})
-            })
     }
 
     inputChangeHandler = (event, inputID) => {
