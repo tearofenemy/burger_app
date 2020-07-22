@@ -4,6 +4,7 @@ import classes from './CheckoutContact.module.css';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import {connect} from 'react-redux';
+import * as actions from '../../../store/actions/index';
 
 class OrderContact extends Component{
 
@@ -98,8 +99,7 @@ class OrderContact extends Component{
                 touched: false
             }
         },
-        formIsValid: false,
-        loading: false
+        formIsValid: false
     }
 
     checkValidity = (value, rules) => {
@@ -133,6 +133,7 @@ class OrderContact extends Component{
             price: this.props.price,
             orderData: formData
         };
+        this.props.onBurgerOrder(order);
     }
 
     inputChangeHandler = (event, inputID) => {
@@ -181,7 +182,7 @@ class OrderContact extends Component{
                 <Button btnType='Success' disabled={!this.state.formIsValid}>MAKE ORDER</Button>
             </form>
         );
-        if(this.state.loading) {
+        if(this.props.loading) {
             form = <Spinner/>;
         }
         return (
@@ -195,9 +196,16 @@ class OrderContact extends Component{
 
 const mapStateToProps = state => {
     return {
-        ingrds: state.ingredients,
-        price: state.totalPrice
+        ingrds: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.loading
     };
 }
 
-export default connect(mapStateToProps)(OrderContact);
+const mapDispatchToProps = dispatch => {
+    return {
+        onBurgerOrder: (orderData) => dispatch(actions.purchaseBurger(orderData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderContact);

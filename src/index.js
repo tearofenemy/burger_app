@@ -6,12 +6,18 @@ import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from 'react-redux';
 import burgerBuilderReducer from "./store/reducers/burgerBuilder";
-import {createStore, applyMiddleware} from "redux";
+import orderReducer from './store/reducers/order';
+import {createStore, applyMiddleware, combineReducers} from "redux";
 import logger from 'redux-logger';
 import thunk from "redux-thunk";
 
+const rootReducer = combineReducers({
+    burgerBuilder: burgerBuilderReducer,
+    order: orderReducer
+});
+
 const store = createStore(
-    burgerBuilderReducer,
+    rootReducer,
     applyMiddleware(logger, thunk)
 );
 
