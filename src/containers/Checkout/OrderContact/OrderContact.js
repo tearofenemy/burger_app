@@ -5,6 +5,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import {connect} from 'react-redux';
 import * as actions from '../../../store/actions/index';
+import {updatedObject, checkValidity} from "../../../shared/utility";
 
 class OrderContact extends Component{
 
@@ -102,23 +103,6 @@ class OrderContact extends Component{
         formIsValid: false
     }
 
-    checkValidity = (value, rules) => {
-        let isValid = true;
-
-        if(!rules) {
-            return true;
-        }
-
-        if(rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if(rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-        return isValid;
-    }
-
     orderHandler = event => {
         event.preventDefault();
 
@@ -138,16 +122,15 @@ class OrderContact extends Component{
     }
 
     inputChangeHandler = (event, inputID) => {
-        const updatedForm = {
-            ...this.state.orderForm
-        };
-        const updatedFormElement = {
-            ...this.state.orderForm[inputID]
-        }
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;
-        updatedForm[inputID] = updatedFormElement;
+        const updatedFormElement = updatedObject(this.state.orderForm[inputID], {
+            value: event.target.value,
+            valid: checkValidity(event.target.value, this.state.orderForm[inputID].validation),
+            touched: true
+        });
+
+        const updatedForm = updatedObject(this.state.orderForm, {
+            [inputID]: updatedFormElement
+        });
 
         let formIsValid = true;
 
